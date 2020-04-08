@@ -33,5 +33,7 @@ public class JsonResponseWrapper {
             Ingredient ingredient = new Ingredient(ingrArr.getString(0), ingrArr.getString(1), ingrArr.getString(2));
             recipe.addIngredient(ingredient);
         }
+
+        return recipe;
     }
 }
