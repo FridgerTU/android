@@ -6,18 +6,23 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+
+import com.example.fridger.mainClasses.Recipe;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity implements AsyncResponse {
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
 
     SearchView searchBar;
     ObjectAnimator animator;
-    TextView jsonString;
+    ListView recipesListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         setContentView(R.layout.activity_main);
 
         searchBar = (SearchView) findViewById(R.id.searchBar);
-        jsonString = (TextView) findViewById(R.id.jsonTextview);
+
 
         searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,8 +42,17 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                new ClientServerCommunication(MainActivity.this)
-                        .execute("https://my-json-server.typicode.com/ivanganchev/FakeOnlineJson/recipes");
+
+                JsonResponseWrapper.getRecipesList(new AsyncResponse<List<Recipe>>() {
+                    @Override
+                    public void processFinish(List<Recipe> result) {
+                        //todo
+                        //String s = null;
+                        //recipesListView = new ListView();
+
+                    }
+                });
+
                 return true;
             }
 
@@ -59,9 +73,9 @@ public class MainActivity extends AppCompatActivity implements AsyncResponse {
         animator.start();
     }
 
-    @Override
-    public void processFinish(JSONArray arr) throws JSONException {
-        jsonString.setText(arr.getString(0));
-        jsonString.setVisibility(View.VISIBLE);
-    }
+//    @Override
+//    public void processFinish(JSONArray arr) throws JSONException {
+//        jsonString.setText(arr.getString(0));
+//        jsonString.setVisibility(View.VISIBLE);
+//    }
 }

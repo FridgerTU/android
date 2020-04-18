@@ -1,5 +1,9 @@
 package com.example.fridger;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.example.fridger.mainClasses.Ingredient;
 import com.example.fridger.mainClasses.Recipe;
 
@@ -10,30 +14,50 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JsonResponseWrapper {
+class JsonResponseWrapper {
+    private static final String url1  = "https://my-json-server.typicode.com/ivanganchev/FakeOnlineJson/recipes";
 
-    public List<Recipe> getRecipesList(JSONArray jsonArray) throws JSONException {
-        ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+    static void getRecipesList(final AsyncResponse<List<Recipe>> response) {
 
-        for(int i = 0; i < jsonArray.length(); i++) {
-            recipes.get(i).setName(jsonArray.getString(0));
-            recipes.get(i).setImageLink(jsonArray.getString(1));
-        }
+        ClientServerCommunication
+               .execute(url1, new AsyncResponse<String>() {
+                   @Override
+                   public void processFinish(String result) {
+                       ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+                       try {
+                           JSONArray jsonArray = new JSONArray(result);
+                           for(int i = 0; i < jsonArray.length(); i++) {
+                               String name = jsonArray.getJSONObject(i).getString("recipeName");
+                               String tumbnailUrl = jsonArray.getJSONObject(i).getString("tumbnailUrl");
 
-        return recipes;
+                               Recipe recipe = new Recipe();
+                               recipe.setName(name);
+                               recipe.setImageLink(tumbnailUrl);
+
+                               recipes.add(recipe);
+                           }
+
+                           response.processFinish(recipes);
+                       } catch (JSONException e) {
+                           e.printStackTrace();
+                       }
+
+                   }
+               });
     }
 
-    public Recipe getRecipeInfo(JSONObject jsonObject) throws JSONException{
-        Recipe recipe = new Recipe();
-
-        recipe.setName(jsonObject.getString("recipeName"));
-        JSONArray ingrArr = jsonObject.getJSONArray("ingredients");
-
-        for(int i = 0; i < ingrArr.length(); i++) {
-            Ingredient ingredient = new Ingredient(ingrArr.getString(0), ingrArr.getString(1), ingrArr.getString(2));
-            recipe.addIngredient(ingredient);
-        }
-
-        return recipe;
-    }
+//    public void getRecipeInfo(final AsyncResponse response) {
+//        this.recipeResponse = response;
+//        clientServerCommunication.execute("https://my-json-server.typicode.com/ivanganchev/FakeOnlineJson/recipe");
+//        Recipe recipe = new Recipe();
+//
+//        recipe.setName(jsonObject.getString("recipeName"));
+//        JSONArray ingrArr = jsonObject.getJSONArray("ingredients");
+//
+//        for(int i = 0; i < ingrArr.length(); i++) {
+//            Ingredient ingredient = new Ingredient(ingrArr.getString(0), ingrArr.getString(1), ingrArr.getString(2));
+//            recipe.addIngredient(ingredient);
+//        }
+//
+//    }
 }
