@@ -10,7 +10,9 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.fridger.customAdapters.RecipesListViewAdapter;
 import com.example.fridger.mainClasses.Recipe;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
         searchBar = (SearchView) findViewById(R.id.searchBar);
 
-
         searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,10 +47,9 @@ public class MainActivity extends AppCompatActivity {
                 JsonResponseWrapper.getRecipesList(new AsyncResponse<List<Recipe>>() {
                     @Override
                     public void processFinish(List<Recipe> result) {
-                        //todo
-                        //String s = null;
-                        //recipesListView = new ListView();
-
+                        recipesListView = (ListView) findViewById(R.id.recipiesListView);
+                        RecipesListViewAdapter adapter = new RecipesListViewAdapter(MainActivity.this, R.layout.recipes_listview_layout, result);
+                        recipesListView.setAdapter(adapter);
                     }
                 });
 
