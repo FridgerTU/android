@@ -3,7 +3,9 @@ package com.example.fridger;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ListView;
@@ -25,26 +27,35 @@ public class MainActivity extends AppCompatActivity {
     SearchView searchBar;
     ObjectAnimator animator;
     ListView recipesListView;
+    int deviceHeight;
+    int deviceWidth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        deviceWidth = size.x;
+        deviceHeight = size.y;
+
         searchBar = (SearchView) findViewById(R.id.searchBar);
 
         searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                horizontalUpMove(v, -300);
+                horizontalUpMove(v, -(deviceHeight / 2 - searchBar.getHeight()));
             }
         });
 
         searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
-                JsonResponseWrapper.getRecipesList(new AsyncResponse<List<Recipe>>() {
+                String searchViewResult = query;
+                JsonResponseWrapper.getRecipesList(searchViewResult, new AsyncResponse<List<Recipe>>() {
                     @Override
                     public void processFinish(List<Recipe> result) {
                         recipesListView = (ListView) findViewById(R.id.recipiesListView);
@@ -72,10 +83,4 @@ public class MainActivity extends AppCompatActivity {
         animator.setDuration(2000);
         animator.start();
     }
-
-//    @Override
-//    public void processFinish(JSONArray arr) throws JSONException {
-//        jsonString.setText(arr.getString(0));
-//        jsonString.setVisibility(View.VISIBLE);
-//    }
 }
