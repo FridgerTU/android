@@ -1,13 +1,16 @@
 package com.example.fridger;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.MenuItemCompat;
+import androidx.core.view.ViewCompat;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.transition.TransitionInflater;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -23,6 +27,7 @@ import com.example.fridger.customAdapters.RecipesListViewAdapter;
 import com.example.fridger.mainClasses.Recipe;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.kogitune.activity_transition.ActivityTransitionLauncher;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -107,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         });
         recipesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 TextView recipeNameView =  (TextView) view.findViewById(R.id.recipeName);
                 String recipeName = recipeNameView.getText().toString();
 
@@ -116,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
                     public void processFinish(Recipe result) {
                         Intent intent = new Intent(MainActivity.this, RecipeInfoActivity.class);
                         intent.putExtra("recipe", result);
-                        startActivity(intent);
+                        intent.putParcelableArrayListExtra("ingrList", result.getIngredients());
+                        ActivityTransitionLauncher.with(MainActivity.this).from(view).launch(intent);
                     }
                 });
             }

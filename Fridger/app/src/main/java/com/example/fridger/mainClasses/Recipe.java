@@ -29,6 +29,7 @@ public class Recipe implements Parcelable {
         cookRecipeText = in.readString();
         timeToCook = in.readString();
         imageLink = in.readString();
+        //ingredients = in.createTypedArrayList(Ingredient.CREATOR);
     }
 
     public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {

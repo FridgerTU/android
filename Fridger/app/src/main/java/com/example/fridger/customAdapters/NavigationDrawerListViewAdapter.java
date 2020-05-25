@@ -17,18 +17,21 @@ import com.bumptech.glide.Glide;
 import com.example.fridger.AsyncResponse;
 import com.example.fridger.MainActivity;
 import com.example.fridger.R;
+import com.example.fridger.mainClasses.Ingredient;
 import com.example.fridger.mainClasses.Recipe;
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
-public class RecipesListViewAdapter extends ArrayAdapter<Recipe> {
+public class NavigationDrawerListViewAdapter extends ArrayAdapter<Ingredient> {
 
     private Context context;
     private int resource;
 
 
-    public RecipesListViewAdapter(Context context, int resource, List<Recipe> objects) {
+    public NavigationDrawerListViewAdapter(Context context, int resource, List<Ingredient> objects) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
@@ -36,17 +39,17 @@ public class RecipesListViewAdapter extends ArrayAdapter<Recipe> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        String recipeName = getItem(position).getName();
-        String imgLink = getItem(position).getImageLink();
+        String ingredientName = getItem(position).getName();
+        String quantity = getItem(position).getQuantity();
 
         LayoutInflater inflater = LayoutInflater.from(context);
         convertView = inflater.inflate(resource, parent, false);
 
-        TextView tvName =  (TextView) convertView.findViewById(R.id.recipeName);
-        ImageView ivRecipeImage = (ImageView) convertView.findViewById(R.id.recipeImage);
+        TextView tvIngrName =  (TextView) convertView.findViewById(R.id.recipeNameNavDrawer);
+        TextView tvQuantity = (TextView) convertView.findViewById(R.id.recipeQuantityNavDrawer);
 
-        tvName.setText(recipeName);
-        Glide.with(context).load(imgLink).centerCrop().into(ivRecipeImage);
+        tvIngrName.setText(ingredientName);
+        tvQuantity.setText(quantity);
 
         return convertView;
     }
