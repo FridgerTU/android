@@ -6,16 +6,13 @@ import java.util.List;
 public class QueryBuilder {
     public static String getRecipeListQuery(ArrayList<String> params, String url) {
         String finalizedQuery;
-        finalizedQuery = url + "/recipes?ingredients=";
-        for(int i = 0; i < params.size(); i++){
-            if(i - 1 < params.size()) {
-                finalizedQuery += params.get(i);
-            } else {
-                finalizedQuery = finalizedQuery  + params.get(i) + ',';
+        finalizedQuery = url + "/recipes?ingredients=" + params.get(0) + ',';
+        for(int i = 1; i < params.size(); i++){
+            finalizedQuery += params.get(i);
+            if(i + 1 < params.size()) {
+                finalizedQuery += ',';
             }
         }
-
-
         return finalizedQuery;
     }
 
