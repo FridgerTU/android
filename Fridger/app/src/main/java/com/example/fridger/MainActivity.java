@@ -2,11 +2,14 @@ package com.example.fridger;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.core.view.ViewCompat;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -15,9 +18,11 @@ import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -25,7 +30,9 @@ import android.widget.TextView;
 
 import com.example.fridger.customAdapters.RecipesListViewAdapter;
 import com.example.fridger.mainClasses.Recipe;
+import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipDrawable;
 import com.google.android.material.chip.ChipGroup;
 import com.kogitune.activity_transition.ActivityTransitionLauncher;
 import com.squareup.picasso.Picasso;
@@ -52,7 +59,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ChipGroup chipGroup = (ChipGroup) findViewById(R.id.ingredientsChipGroup);
+        final LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService
+                (Context.LAYOUT_INFLATER_SERVICE);
+
+        final FlexboxLayout chipsGroup = (FlexboxLayout) findViewById(R.id.chipsLayoutId);
+        View chipLayout = chipsGroup.findViewById(R.id.customChipId);
 
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
@@ -77,21 +88,37 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 ingredients.add(query);
-                Chip newChip = new Chip(MainActivity.this);
-                newChip.setText(query);
-                newChip.setCloseIconVisible(true);
-                chipGroup.addView(newChip);
+                View newChip = inflater.inflate(R.layout.custom_chip_layout, chipsGroup, false);
+                TextView ingrName = (TextView) newChip.findViewById(R.id.chipTextId);
+                ingrName.setText(query);
+                chipsGroup.addView(newChip);
                 doneButton.setEnabled(true);
                 searchBar.setQuery("", false);
                 searchBar.clearFocus();
+
+                newChip.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        TextView ingrName = (TextView) v.findViewById(R.id.chipTextId);
+                        for(int i = 0; i < chipsGroup.getChildCount(); i++) {
+                            if(ingrName.getText().equals(ingredients.get(i))) {
+                                ingredients.remove(i);
+                            }
+                        }
+                        ((ViewGroup) v.getParent()).removeView(v);
+                    }
+                });
                 return true;
             }
+
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 return true;
             }
         });
+
+
 
         doneButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -105,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
                         recipesListView.setVisibility(View.VISIBLE);
                         recipesListView.setAdapter(adapter);
                         doneButton.setVisibility(View.GONE);
-                        chipGroup.setVisibility(View.GONE);
+                        chipsGroup.setVisibility(View.GONE);
                     }
                 });
             }

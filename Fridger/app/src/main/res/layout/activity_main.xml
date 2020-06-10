@@ -6,29 +6,47 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ListView
-        android:id="@+id/recipiesListView"
-        android:layout_width="match_parent"
-        android:layout_height="850dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:divider="@null"
-        android:dividerHeight="0dp"></ListView>
-
     <SearchView
         android:id="@+id/searchBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:background="@drawable/custom_search_bar"
+        android:imeOptions="actionDone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.514"
-        android:imeOptions="actionDone"
-        />
+        app:layout_constraintVertical_bias="0.514" />
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:id="@+id/chipsLayoutId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/searchBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3">
+
+    </com.google.android.flexbox.FlexboxLayout>
+
+    <ListView
+        android:id="@+id/recipiesListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:visibility="gone"
+        android:layout_margin="15dp"
+        ></ListView>
 
 
     <Button
@@ -36,27 +54,17 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_margin="0dp"
+        android:enabled="false"
+        android:insetBottom="0dp"
+        android:padding="10dp"
         android:text="Done"
         android:textSize="20dp"
-        android:padding="10dp"
         android:visibility="gone"
-        android:enabled="false"
+        app:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/ingredientsChipGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
-        android:clipToPadding="false"
-        app:layout_constraintBottom_toTopOf="@+id/searchBar"
-        app:layout_constraintTop_toTopOf="parent">
-    </com.google.android.material.chip.ChipGroup>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
