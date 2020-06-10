@@ -28,10 +28,12 @@ class JsonResponseWrapper {
                            for(int i = 0; i < jsonArray.length(); i++) {
                                String name = jsonArray.getJSONObject(i).getString("recipeName");
                                String tumbnailUrl = jsonArray.getJSONObject(i).getString("thumbnail");
+                               String id = jsonArray.getJSONObject(i).getString("recipeId");
 
                                Recipe recipe = new Recipe();
                                recipe.setName(name);
                                recipe.setImageLink(tumbnailUrl);
+                               recipe.setRecipeId(id);
 
                                recipes.add(recipe);
                            }
@@ -45,8 +47,8 @@ class JsonResponseWrapper {
                });
     }
 
-      static void getRecipeInfo(String name, final AsyncResponse<Recipe> response) {
-        String query =  QueryBuilder.getRecipeInfoQuery(name, baseUrl);
+      static void getRecipeInfo(String id, final AsyncResponse<Recipe> response) {
+        String query =  QueryBuilder.getRecipeInfoQuery(id, baseUrl);
 
         ClientServerCommunication.execute(query, new AsyncResponse<String>() {
             @Override

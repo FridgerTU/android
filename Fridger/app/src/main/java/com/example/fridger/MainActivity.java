@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     int deviceHeight;
     int deviceWidth;
     ArrayList<String> ingredients = new ArrayList<String>();
+    List<Recipe> recipes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,14 +119,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
         doneButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 JsonResponseWrapper.getRecipesList(ingredients, new AsyncResponse<List<Recipe>>() {
                     @Override
                     public void processFinish(List<Recipe> result) {
+                        recipes = result;
                         RecipesListViewAdapter adapter = new RecipesListViewAdapter(MainActivity.this,
                                 R.layout.recipes_listview_layout,
                                 result);
@@ -140,10 +140,9 @@ public class MainActivity extends AppCompatActivity {
         recipesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                TextView recipeNameView =  (TextView) view.findViewById(R.id.recipeName);
-                String recipeName = recipeNameView.getText().toString();
 
-                JsonResponseWrapper.getRecipeInfo(recipeName, new AsyncResponse<Recipe>() {
+                String chosenRecipeId = recipes.get(position).getRecipeId();
+                JsonResponseWrapper.getRecipeInfo(chosenRecipeId, new AsyncResponse<Recipe>() {
                     @Override
                     public void processFinish(Recipe result) {
                         Intent intent = new Intent(MainActivity.this, RecipeInfoActivity.class);

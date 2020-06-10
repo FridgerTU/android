@@ -16,10 +16,9 @@ public class QueryBuilder {
         return finalizedQuery;
     }
 
-    public static String getRecipeInfoQuery(String name, String url) {
+    public static String getRecipeInfoQuery(String id, String url) {
         String finalizedQuery;
-        name = name.replaceAll("\\s+","%20");
-        finalizedQuery = url + "/recipe?name="+ name;
+        finalizedQuery = url + "/recipe/"+ id;
         return finalizedQuery;
     }
 }

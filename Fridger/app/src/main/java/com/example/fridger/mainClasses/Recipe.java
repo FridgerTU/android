@@ -12,12 +12,23 @@ public class Recipe implements Parcelable {
     private String timeToCook;
     private String imageLink;
 
-    public Recipe(ArrayList<Ingredient> ingredients, String cookRecipeText, String timeToCook, String name, String imageLink) {
+    public String getRecipeId() {
+        return recipeId;
+    }
+
+    public void setRecipeId(String recipeId) {
+        this.recipeId = recipeId;
+    }
+
+    private String recipeId;
+
+    public Recipe(ArrayList<Ingredient> ingredients, String cookRecipeText, String timeToCook, String name, String imageLink, String recipeId) {
         this.ingredients = ingredients;
         this.cookRecipeText = cookRecipeText;
         this.timeToCook = timeToCook;
         this.name = name;
         this.imageLink = imageLink;
+        this.recipeId = recipeId;
     }
 
     public Recipe() {
@@ -29,7 +40,6 @@ public class Recipe implements Parcelable {
         cookRecipeText = in.readString();
         timeToCook = in.readString();
         imageLink = in.readString();
-        //ingredients = in.createTypedArrayList(Ingredient.CREATOR);
     }
 
     public static final Creator<Recipe> CREATOR = new Creator<Recipe>() {
