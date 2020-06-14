@@ -57,17 +57,20 @@ public class RecipeInfoActivity extends AppCompatActivity {
         final ImageButton arrow = (ImageButton) findViewById(R.id.arrowViewId);
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        TextView recipeName = (TextView) findViewById(R.id.recNameInfoActivityId);
         //ViewPager viewPager = (ViewPager) findViewById(R.id.viewPagerId);
 
         final int location[] = new int[2];
         arrow.getLocationOnScreen(location);
 
-        arrow.bringToFront();
+
         Recipe recipe = (Recipe) getIntent().getExtras().getParcelable("recipe");
         List<Ingredient> ingrList = getIntent().getParcelableArrayListExtra("ingrList");
 
         Glide.with(this).load(recipe.getImageLink()).centerCrop().into(image);
+        recipeName.setText(recipe.getName());
         ActivityTransition.with(getIntent()).to(findViewById(R.id.imageId)).start(savedInstanceState);
+        arrow.bringToFront();
 
         //viewPager.setAdapter(new RecipeInfoPageAdapter(getSupportFragmentManager()));
 
