@@ -5,8 +5,11 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -34,6 +37,8 @@ import java.util.List;
 
 public class RecipeInfoActivity extends AppCompatActivity {
 
+    private Boolean isButtonClicked = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +52,8 @@ public class RecipeInfoActivity extends AppCompatActivity {
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         TextView recipeName = (TextView) findViewById(R.id.recNameInfoActivityId);
+        final TextView descriptionButton = (TextView) findViewById(R.id.descriptionButtonId);
+        final TextView descriptionText = (TextView) findViewById(R.id.descriptionTextId);
 
         Recipe recipe = (Recipe) getIntent().getExtras().getParcelable("recipe");
         List<Ingredient> ingrList = getIntent().getParcelableArrayListExtra("ingrList");
@@ -55,8 +62,9 @@ public class RecipeInfoActivity extends AppCompatActivity {
         Glide.with(this).load(recipe.getImageLink()).centerCrop().into(image);
         recipeName.setText(recipe.getName());
         ActivityTransition.with(getIntent()).to(findViewById(R.id.imageId)).start(savedInstanceState);
+        descriptionText.setText(recipe.getCookRecipeText());
+        descriptionText.setMovementMethod(new ScrollingMovementMethod());
         arrow.bringToFront();
-
 
         NavigationDrawerListViewAdapter adapter = new NavigationDrawerListViewAdapter(RecipeInfoActivity.this,
                 R.layout.navigation_drawer_layout,
@@ -81,6 +89,36 @@ public class RecipeInfoActivity extends AppCompatActivity {
                     fadeInAnimation(arrow, anim);
                     drawerLayout.openDrawer(Gravity.RIGHT);
                 }
+            }
+        });
+
+        descriptionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(isButtonClicked == false) {
+                    descriptionText.setVisibility(View.VISIBLE);
+
+                    descriptionText.bringToFront();
+                    descriptionButton.invalidate();
+                    arrow.invalidate();
+
+                    descriptionText.setAlpha(0.0f);
+
+                    descriptionText.animate()
+                            .alpha(1.0f)
+                            .setListener(null);
+                    isButtonClicked = true;
+                } else {
+                    descriptionText.animate()
+                            .alpha(0.0f)
+                            .setListener(null);
+
+                    descriptionText.setVisibility(View.GONE);
+
+                    isButtonClicked = false;
+                }
+
             }
         });
     }
