@@ -23,18 +23,20 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NavigationDrawerListViewAdapter extends ArrayAdapter<Ingredient> {
 
     private Context context;
     private int resource;
+    private ArrayList<String> seacrhIngr;
 
-
-    public NavigationDrawerListViewAdapter(Context context, int resource, List<Ingredient> objects) {
+    public NavigationDrawerListViewAdapter(Context context, int resource, List<Ingredient> objects, ArrayList<String> searchIngr) {
         super(context, resource, objects);
         this.context = context;
         this.resource = resource;
+        this.seacrhIngr = searchIngr;
     }
 
     @Override
@@ -47,9 +49,19 @@ public class NavigationDrawerListViewAdapter extends ArrayAdapter<Ingredient> {
 
         TextView tvIngrName =  (TextView) convertView.findViewById(R.id.recipeNameNavDrawer);
         TextView tvQuantity = (TextView) convertView.findViewById(R.id.recipeQuantityNavDrawer);
+        for(int i = 0; i < seacrhIngr.size(); i++) {
+            if(ingredientName.toLowerCase().equals(seacrhIngr.get(i))){
+                tvIngrName.setText(ingredientName.toLowerCase());
+                tvIngrName.setTextColor(Color.parseColor("#66b266"));
+                tvQuantity.setText(quantity.toLowerCase());
+                tvQuantity.setTextColor(Color.parseColor("#66b266"));
+            }
+            else {
+                tvIngrName.setText(ingredientName.toLowerCase());
+                tvQuantity.setText(quantity.toLowerCase());
+            }
 
-        tvIngrName.setText(ingredientName);
-        tvQuantity.setText(quantity);
+        }
 
         return convertView;
     }

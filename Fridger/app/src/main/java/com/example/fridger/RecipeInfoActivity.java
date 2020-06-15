@@ -3,44 +3,33 @@ package com.example.fridger;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.animation.ObjectAnimator;
-import android.media.Image;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.fridger.customAdapters.NavigationDrawerListViewAdapter;
-import com.example.fridger.customAdapters.RecipeInfoPageAdapter;
-import com.example.fridger.customAdapters.RecipesListViewAdapter;
 import com.example.fridger.mainClasses.Ingredient;
 import com.example.fridger.mainClasses.Recipe;
 import com.google.android.material.navigation.NavigationView;
 import com.kogitune.activity_transition.ActivityTransition;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeInfoActivity extends AppCompatActivity {
@@ -58,25 +47,21 @@ public class RecipeInfoActivity extends AppCompatActivity {
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         TextView recipeName = (TextView) findViewById(R.id.recNameInfoActivityId);
-        //ViewPager viewPager = (ViewPager) findViewById(R.id.viewPagerId);
-
-        final int location[] = new int[2];
-        arrow.getLocationOnScreen(location);
-
 
         Recipe recipe = (Recipe) getIntent().getExtras().getParcelable("recipe");
         List<Ingredient> ingrList = getIntent().getParcelableArrayListExtra("ingrList");
+        ArrayList<String> searchIngr = getIntent().getExtras().getStringArrayList("searchIngr");
 
         Glide.with(this).load(recipe.getImageLink()).centerCrop().into(image);
         recipeName.setText(recipe.getName());
         ActivityTransition.with(getIntent()).to(findViewById(R.id.imageId)).start(savedInstanceState);
         arrow.bringToFront();
 
-        //viewPager.setAdapter(new RecipeInfoPageAdapter(getSupportFragmentManager()));
 
         NavigationDrawerListViewAdapter adapter = new NavigationDrawerListViewAdapter(RecipeInfoActivity.this,
                 R.layout.navigation_drawer_layout,
-                ingrList);
+                ingrList,
+                searchIngr);
 
         navDrawer.setAdapter(adapter);
 

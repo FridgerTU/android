@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(MainActivity.this, RecipeInfoActivity.class);
                         intent.putExtra("recipe", result);
                         intent.putParcelableArrayListExtra("ingrList", result.getIngredients());
+                        intent.putExtra("searchIngr", ingredients);
                         ActivityTransitionLauncher.with(MainActivity.this).from(view).launch(intent);
                     }
                 });
