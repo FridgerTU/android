@@ -7,12 +7,10 @@ public class QueryBuilder {
     public static String getRecipeListQuery(ArrayList<String> params, String url) {
         String finalizedQuery;
 
-        finalizedQuery = url + "/recipes?ingredients=" + params.get(0) + ',';
-        for(int i = 1; i < params.size(); i++){
+        finalizedQuery = url + "/recipes?ingredients=" + params.get(0).replaceAll("\\s+", "_");
+        for(int i = 1; i < params.size(); i++) {
+            finalizedQuery += ',';
             finalizedQuery += params.get(i).replaceAll("\\s+", "_");
-            if(i + 1 < params.size()) {
-                finalizedQuery += ',';
-            }
         }
         return finalizedQuery;
     }

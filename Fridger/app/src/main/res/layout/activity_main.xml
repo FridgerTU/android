@@ -157,6 +157,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginBottom="15dp"
+                app:flexWrap="wrap"
                 >
             </com.google.android.flexbox.FlexboxLayout>
         </ScrollView>
