@@ -60,9 +60,7 @@ public class NavigationDrawerListViewAdapter extends ArrayAdapter<Ingredient> {
                 tvIngrName.setText(ingredientName.toLowerCase());
                 tvQuantity.setText(quantity.toLowerCase());
             }
-
         }
-
         return convertView;
     }
 }

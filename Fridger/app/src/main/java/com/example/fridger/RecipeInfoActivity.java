@@ -99,12 +99,9 @@ public class RecipeInfoActivity extends AppCompatActivity {
                 if(isButtonClicked == false) {
                     descriptionText.setVisibility(View.VISIBLE);
 
-                    descriptionText.bringToFront();
-                    descriptionButton.invalidate();
-                    arrow.invalidate();
+                    arrow.setVisibility(View.GONE);
 
                     descriptionText.setAlpha(0.0f);
-
                     descriptionText.animate()
                             .alpha(1.0f)
                             .setListener(null);
@@ -117,6 +114,7 @@ public class RecipeInfoActivity extends AppCompatActivity {
                     descriptionText.setVisibility(View.GONE);
 
                     isButtonClicked = false;
+                    arrow.setVisibility(View.VISIBLE);
                 }
 
             }

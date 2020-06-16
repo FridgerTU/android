@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Editable;
@@ -69,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     Boolean isOpenedFirstTime = false;
     EditText ingrName;
     Button doneFabExtensionButton;
+    ImageView logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,11 +110,14 @@ public class MainActivity extends AppCompatActivity {
         closeFabExtensionButton = (ImageButton) findViewById(R.id.fabCloseButtonId);
         doneFabExtensionButton = (Button) findViewById(R.id.fabMakeRequestDoneId);
         ingrName = (EditText) findViewById(R.id.fabEditTextId);
+        logo = (ImageView) findViewById(R.id.logoId);
 
         searchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 horizontalUpMove(v, -(deviceHeight / 2 - searchBar.getHeight()));
+                logo.animate()
+                        .alpha(0.0f);
                 doneButton.setVisibility(View.VISIBLE);
 
             }
@@ -209,7 +214,8 @@ public class MainActivity extends AppCompatActivity {
                         }
                         return false; // true to keep the Speed Dial open
                     case R.id.fab_new_search:
-
+                        finish();
+                        startActivity(getIntent());
                     default:
                         return false;
                 }

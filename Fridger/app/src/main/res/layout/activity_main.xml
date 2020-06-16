@@ -7,6 +7,17 @@
     android:background="@drawable/custom_app_background"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/logoId"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/logo"
+        android:antialias="false"
+        app:layout_constraintBottom_toTopOf="@+id/searchBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <SearchView
         android:id="@+id/searchBar"
         android:layout_width="0dp"
@@ -14,6 +25,8 @@
         android:layout_margin="20dp"
         android:background="@drawable/custom_search_bar"
         android:imeOptions="actionDone"
+        android:autofillHints="Enter your ingredients here"
+        
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,9 +37,9 @@
         android:id="@+id/chipsLayoutId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+
         app:flexWrap="wrap"
         app:layout_constraintBottom_toTopOf="@+id/searchBar"
         app:layout_constraintEnd_toEndOf="parent"
